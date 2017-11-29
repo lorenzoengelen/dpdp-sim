@@ -35,6 +35,7 @@ setInterval(tick, 1000);
 // POLICY FUNCTION APPROXIMATION
 import PFA from './mdp/pfa';
 import State from './mdp/state';
+import policy from './mdp/policy';
 
 const ab = s => { return { a: Number(s.split(',')[0]), b: Number(s.split(',')[1]) }; };
 
@@ -81,11 +82,6 @@ const init = State.init()
   .addVehicle(7.5, 2.5)
   .addVehicle(7.5, 7.5)
   .addVehicle(7.5, 7.5);
-
-const policy = state => {
-  const postState = state;
-  return postState;
-};
 
 const pfa = new PFA(init, policy, samples)
   .approximate();
