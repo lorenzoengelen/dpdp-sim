@@ -8,7 +8,8 @@ const config = {
   },
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }
+      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
+      { test: /\.(json|scen)$/, loader: 'json-loader' }
     ]
   },
   devServer: {
