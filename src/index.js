@@ -19,29 +19,46 @@ const tick = () => {
 setInterval(tick, 1000);
 
 // DATASET PART
-import DatasetGenerator from './dataset/DatasetGenerator';
+// import DatasetGenerator from './dataset/generator';
 
-window.avi = (i) => {
-  var i = i || 0;
-  console.log(`this is number ${i}`);
-  if (i < 10) {
-    setTimeout(() => {
-      window.avi(++i);
-    }, 1000);
-  }
-};
-
-const dg = DatasetGenerator
-  .builder()
-  .setScenarioLength(4)
-  .setDynamismLevels([0.5])
-  .setUrgencyLevels([20])
-  .setScaleLevels([1])
-  .setNumInstances(1)
-  .setDatasetDir()
-  .setNumThreads()
-  .build();
+// const dg = DatasetGenerator
+//   .builder()
+//   .setScenarioLength(4)
+//   .setDynamismLevels([0.5])
+//   .setUrgencyLevels([20])
+//   .setScaleLevels([1])
+//   .setNumInstances(1)
+//   .setDatasetDir()
+//   .setNumThreads()
+//   .build();
 
 // MDP PART
-import MDP from './mdp/mdp';
-const mdp = new MDP();
+for (let i = 0; i < 1; i++) {
+  // iterate over SAMPLE PATHS
+  const sample = require(`./lon/0.80-20-1.00-${i}.scen`);
+  console.log(`SAMPLE PATH: ./lon/0.80-20-1.00-${i}.scen`);
+
+
+  // iterate over SAMPLE REALIZATIONS
+  for (let j = 0, len = sample.events.length; j < len; j++) {
+    const realization = sample.events[j];
+    if (realization.class === 'com.github.rinde.rinsim.pdptw.common.AutoValue_AddParcelEvent') {
+      console.log(j);
+    }
+  } // endfor j
+} // endfor i
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
