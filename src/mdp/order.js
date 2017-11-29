@@ -7,5 +7,7 @@ export default class Order {
     this.e = e;             // earliest time
     this.l = l;             // latest time
     this.s = s;             // service time
+    this.a = a;             // arrival time
+    this.w = w;             // waiting time
   }
 }
