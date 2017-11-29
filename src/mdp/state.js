@@ -1,10 +1,16 @@
+import Order from './order';
+
+// <== HARD CODED ==>
+const START_HORIZON = 0;
+const END_HORIZON = 28000000;
+
 export default class State {
-  constructor(k, tk, c) {
+  constructor(k, tk, c, C, R) {
     this.k = k;             // decision point
     this.tk = tk;           // decision time
-    this.c = null || c;     // new customer
-    this.C = [];            // accepted customers
-    this.R = [];            // route plan
+    this.c = c || null;     // new customer
+    this.C = C || [];       // accepted customers
+    this.R = R || [];       // route plan
   }
 
   static init() {
@@ -12,7 +18,7 @@ export default class State {
   }
 
   addVehicle(hx, hy) {
-    this.R.push({vid: this.R.length + 1, hx, hy, r: []});
+    this.R.push({vid: this.R.length + 1, hx, hy, r: [new Order(0, hx, hy, 1, START_HORIZON, END_HORIZON, 0, 0, 0), new Order(0, hx, hy, -1, START_HORIZON, END_HORIZON, 0, 0, 0)]});
     return this;
   }
 }
