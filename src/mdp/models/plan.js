@@ -10,11 +10,33 @@ export class RoutePlan {
     this.routes = new Array();
   }
 
+  static init() {
+    return new RoutePlan();
+  }
+
+  setm(m) {
+    this.m = m;
+    return this;
+  }
+
+  setRoutes(routes) {
+    // this.routes = routes;
+    routes.forEach(route => {
+      const {id, xHomeLocation, yHomeLocation, visits} = route;
+      this.routes.push(Route.init()
+        .setId(id)
+        .setHomeLocation(xHomeLocation, yHomeLocation)
+        .setVisits(visits));
+    });
+    return this;
+  }
+
   addRoute(xHomeLocation, yHomeLocation) {
     this.m++;
     this.routes.push(Route.init()
       .setId(this.m)
-      .setHomeLocation(xHomeLocation, yHomeLocation));
+      .setHomeLocation(xHomeLocation, yHomeLocation)
+      .setHomeVisits(xHomeLocation, yHomeLocation));
     return this;
   }
 }; // endClass RoutePlan
@@ -39,6 +61,10 @@ export class Route {
   setHomeLocation(x, y) {
     this.xHomeLocation = x;
     this.yHomeLocation = y;
+    return this;
+  }
+
+  setHomeVisits(x, y) {
     // start HOME
     this.visits.push(Home.init()
       .setId(0)
@@ -55,7 +81,32 @@ export class Route {
       .setTimeWindow(START_HORIZON, END_HORIZON)
       .setServiceTimeDuration(0)
       .setArrivalTime(0));
-      
+    return this;
+  }
+
+  setVisits(visits) { // TODO
+    visits.forEach(visit => {
+      const {id, xLocation, yLocation, quantity, earliestServiceTime, latestServiceTime, serviceTimeDuration, arrivalTime, waitingTime} = visit;
+      const pushOrder = order => {
+        return order.init()
+          .setId(id)
+          .setLocation(xLocation, yLocation)
+          .setQuantity(quantity)
+          .setTimeWindow(earliestServiceTime, latestServiceTime)
+          .setServiceTimeDuration(serviceTimeDuration)
+          .setArrivalTime(arrivalTime);
+      };
+      if (id === 0) { 
+        // HOME
+        this.visits.push(pushOrder(Home));
+      } else if (id > 0 && quantity === 1) { 
+        // PICKUP
+        this.visits.push(pushOrder(Pickup));
+      } else { 
+        // DELIVERY
+        this.visits.push(pushOrder(Delivery));
+      }
+    });
     return this;
   }
 }; // endClass Route
