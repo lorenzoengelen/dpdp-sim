@@ -15,19 +15,13 @@ export default class State {
   }
 
   static clone(state) {
-    const deepClonedState = JSON.parse(JSON.stringify(state));
-    const {k, tk, c, C, R} = deepClonedState;
-    const newState = State.init()
+    const {k, tk, c, C, R} = JSON.parse(JSON.stringify(state));
+    return State.init()
       .setDecisionPoint(k)
       .setDecisionTime(tk)
       .setNewCustomer(c) // TODO
       .setAcceptedCustomers(C) // TODO
       .setRoutePlan(R);
-
-    console.log('oldstate', state);
-    console.log('newstate', newState)
-
-    return newState;
   }
 
   setk(point) {
