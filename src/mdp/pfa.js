@@ -31,30 +31,36 @@ export default class PFA {
 
   // SAMPLE AVERAGE APPROXIMATION (SAA) (Fu, 2015)
   approximate() {
+    const {H, paths} = this.samples;
     // iterate over SAMPLES
-    for (let h = 0; h < 1/*this.samples.H*/; h++) {
-      // set SAMPLE PATH
-      const {K, path} = this.samples.paths[h];
+    for (let h = 0; h < 1/*H*/; h++) {
       
-      let decisionState = null;
-
-      // let clonedState = cloneState(this.initialState);
-
-      let clonedState = State.clone(this.initialState); 
+      // set SAMPLE PATH
+      const {K, path} = paths[h];
+      
+      // set INITIAL STATE
+      const initialState = State.clone(this.initialState);
+      const decisionStates = new Array();
+      const postDecisionStates = new Array(initialState);
 
       // iterate over REALIZATIONS
-      for (let k = 0; k < K; k++) {
+      for (let k = 0; k < 10/*K*/; k++) {
         // set REALIZATION
         const realization = path[k];
-        // console.log(realization)
+        const {announceTime} = realization;
 
         // DECISION STATE
-        // create a new state
-        let decisionState = State.init();
+        // create a new state - map last post-decision state to new decision state
+        const decisionState = State.clone(postDecisionStates[postDecisionStates.length - 1])
+          .setDecisionPoint(k + 1)
+          .setDecisionTime(announceTime)
+          .setNewCustomer(realization);
+        
+        console.log(decisionState)
 
         // POST-DECISION STATE - the policy maps the DECISION STATE to a POST-DECISION STATE
         // return a new state
-        let postDecisionState = this.policyFunction(decisionState);
+        const postDecisionState = this.policyFunction(decisionState);
 
       } // endfor K (sample paths)
     }// endfor H (realizations)
