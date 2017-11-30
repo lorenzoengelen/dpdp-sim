@@ -36,7 +36,7 @@ setInterval(tick, 1000);
 import PFA from './mdp/pfa';
 import State from './mdp/state';
 import {Samples, Path, Realization} from './mdp/samples';
-import policy from './mdp/policy';
+import {policy, myopic} from './mdp/policy';
 
 const ab = s => { return { a: Number(s.split(',')[0]), b: Number(s.split(',')[1]) }; };
 
@@ -52,8 +52,6 @@ const initialState = State.init()
   .addVehicle(7.5, 2.5)
   .addVehicle(7.5, 7.5)
   .addVehicle(7.5, 7.5);
-
-console.log(initialState);
 
 // init SAMPLE PATH REALIZATIONS
 const samples = Samples.init();
@@ -104,13 +102,14 @@ for (let i = 0; i < 5; i++) {
 // init POLICY FUNCTION APPROXIMATION
 const pfa = PFA.init()
   .setInitialState(initialState)
-  .setPolicyFunction(policy)
+  .setPolicyFunction(myopic)
   .setSamples(samples);
 
 console.log(pfa);
 
+
 // APPROXIMATE policy
-// pfa.approximate();
+pfa.approximate();
 
 
 
