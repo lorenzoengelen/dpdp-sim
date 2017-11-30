@@ -18,7 +18,7 @@ export default class State {
   }
 
   addVehicle(hx, hy) {
-    this.R.push({vid: this.R.length + 1, hx, hy, r: [new Order(0, hx, hy, 1, START_HORIZON, END_HORIZON, 0, 0, 0), new Order(0, hx, hy, -1, START_HORIZON, END_HORIZON, 0, 0, 0)]});
+    this.R.push({vid: this.R.length + 1, hx, hy, r: [new Order(0, hx, hy, 1, START_HORIZON, END_HORIZON, 0, 0, 0, 0), new Order(0, hx, hy, -1, START_HORIZON, END_HORIZON, 0, 0, 0, 0)]});
     return this;
   }
 }
