@@ -1,7 +1,7 @@
 export class Samples {
   constructor() {
     this.H = 0;
-    this.samples = new Array();
+    this.paths = new Array();
   }
 
   static init() {
@@ -13,7 +13,7 @@ export class Samples {
   }
 
   addPath(path) {
-    this.samples.push(path);
+    this.paths.push(path);
     this.H++;
     return this;
   }
