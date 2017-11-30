@@ -76,7 +76,7 @@ export class Realization {
 
   setAnnounceTime(time) {
     this.announceTime = time;
-    this.reactionTime = this.latestPickuptime - this.announceTime;
+    this.reactionTime = this.latestPickupTime - this.announceTime;
     return this;
   }
 
@@ -89,6 +89,7 @@ export class Realization {
   setPickupTimeWindow(earliest, latest) {
     this.earliestPickupTime = earliest;
     this.latestPickupTime = latest;
+    this.reactionTime = this.latestPickupTime - this.announceTime;
     return this;
   }
 
