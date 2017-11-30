@@ -1,4 +1,5 @@
 import State from './state';
+import {cloneState} from '../utils/utils';
 
 export default class PFA {
   constructor() {
@@ -6,8 +7,7 @@ export default class PFA {
     this.policyFunction = null;
     this.samples = null;
 
-    this.decisionStates = new Array();
-    this.postDecisionStates = new Array();
+    //
   }
 
   static init() {
@@ -31,29 +31,33 @@ export default class PFA {
 
   // SAMPLE AVERAGE APPROXIMATION (SAA) (Fu, 2015)
   approximate() {
-    // iterate over SAMPLE PATHS
-    for (let h = 0, lnh = this.samples.length; h < 1; h++) { // <== NOTE HARDCODED 1 LOOP (lnh) ==>
-      // set REALIZATIONS
-      const sample = this.samples[h];
+    // iterate over SAMPLES
+    for (let h = 0; h < 1/*this.samples.H*/; h++) {
+      // set SAMPLE PATH
+      const {K, path} = this.samples.paths[h];
       
-      // set INITIAL STATE
-      const initialState = new State(this.init.k, this.init.tk, this.init.c, this.init.C, this.init.R); 
-      const states = [initialState];
+      let decisionState = null;
+
+      // let clonedState = cloneState(this.initialState);
+
+      let clonedState = State.clone(this.initialState); 
 
       // iterate over REALIZATIONS
-      for (let k = 0, lnk = sample.length; k < 1; k++) { // <== NOTE HARDCODED 10 LOOP (lnk) ==>
-        const realization = sample[k], r = sample[k];
+      for (let k = 0; k < K; k++) {
+        // set REALIZATION
+        const realization = path[k];
+        // console.log(realization)
 
-        // PRE-DECISION STATE
-        const {C, R} = states[states.length - 1];
-        // enter a new DECISION STATE due to new request for service
-        const decisionState = new State(r.k, r.a, r, C, R);
+        // DECISION STATE
+        // create a new state
+        let decisionState = State.init();
 
-        // the policy maps the DECISION STATE to a POST-DECISION STATE
-        const postDecisionState = this.policy(decisionState);
+        // POST-DECISION STATE - the policy maps the DECISION STATE to a POST-DECISION STATE
+        // return a new state
+        let postDecisionState = this.policyFunction(decisionState);
 
-      } // endfor k (realizations)
-    } // endfor h (sample paths)
+      } // endfor K (sample paths)
+    }// endfor H (realizations)
 
-  } // end approximate
-} // end class PFA
+  } // end SAA approximation
+} // endClass PFA
