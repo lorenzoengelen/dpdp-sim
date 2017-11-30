@@ -42,6 +42,8 @@ const ab = s => { return { a: Number(s.split(',')[0]), b: Number(s.split(',')[1]
 
 // create INITIAL STATE
 const initialState = State.init()
+  .setDecisionPoint(0)
+  .setDecisionTime(0)
   .addVehicle(2.5, 2.5)
   .addVehicle(2.5, 2.5)
   .addVehicle(2.5, 7.5)
@@ -50,6 +52,8 @@ const initialState = State.init()
   .addVehicle(7.5, 2.5)
   .addVehicle(7.5, 7.5)
   .addVehicle(7.5, 7.5);
+
+console.log(initialState);
 
 // init SAMPLE PATH REALIZATIONS
 const samples = Samples.init();
