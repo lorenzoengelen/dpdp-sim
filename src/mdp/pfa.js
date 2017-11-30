@@ -1,24 +1,23 @@
 import State from './state';
 
 export default class PFA {
-  constructor(init, policy, samples) {
-    this.init = init;                   // initial state
-    this.policy = policy;               // policy
-    this.samples = samples;             // sample path realizations
-
+  constructor() {
+    this.initialState = null; 
+    this.policyFunction = null;
+    this.samples = null;
   }
 
   static init() {
     return new PFA();
   }
 
-  setInitialState(initialState) {
-    this.init = initialState;
+  setInitialState(state) {
+    this.initialState = state;
     return this;
   }
 
-  setPolicy(policy) {
-    this.policy = policy;
+  setPolicyFunction(func) {
+    this.policyFunction = func;
     return this;
   }
 
