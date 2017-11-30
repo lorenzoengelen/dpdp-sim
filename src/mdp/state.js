@@ -14,6 +14,22 @@ export default class State {
     return new State();
   }
 
+  static clone(state) {
+    const deepClonedState = JSON.parse(JSON.stringify(state));
+    const {k, tk, c, C, R} = deepClonedState;
+    const newState = State.init()
+      .setDecisionPoint(k)
+      .setDecisionTime(tk)
+      .setNewCustomer(c) // TODO
+      .setAcceptedCustomers(C) // TODO
+      .setRoutePlan(R);
+
+    console.log('oldstate', state);
+    console.log('newstate', newState)
+
+    return newState;
+  }
+
   setk(point) {
     this.k = point;
     return this;
@@ -30,15 +46,41 @@ export default class State {
   }
 
   setNewCustomer(customer) {
+    this.c = customer;
     return this;
   }
 
   setAcceptedCustomers(customers) {
+    this.C = customers;
     return this;
   }
 
   setRoutePlan(plan) {
+    const {m, routes} = plan;
+    this.R = RoutePlan.init()
+      .setm(m)
+      .setRoutes(routes);
     return this;
+  }
+
+  getDecisionPoint() {
+    return this.k;
+  }
+
+  getDecisionTime() {
+    return this.tk;
+  }
+
+  getNewCustomer() {
+    return this.c;
+  }
+
+  getAcceptedCustomers() {
+    return this.C;
+  }
+
+  getRoutePlan() {
+    return this.R;
   }
 
   addVehicle(xHomeLocation, yHomeLocation) {
@@ -50,4 +92,4 @@ export default class State {
     this.R.addRoute(hx, hy);
     return this;
   }
-}
+} // endClass State
