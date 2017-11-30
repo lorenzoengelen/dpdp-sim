@@ -17,7 +17,7 @@ export class Samples {
     this.H++;
     return this;
   }
-};
+}; // endClass Samples
 
 export class Path {
   constructor() {
@@ -38,7 +38,7 @@ export class Path {
     this.K++;
     return this;
   } 
-};
+}; // endClass Path
 
 export class Realization {
   constructor() {
@@ -114,7 +114,7 @@ export class Realization {
     this.deliveryServiceTime = duration;
     return this;
   }
-}
+}; // endClass Realization
 
 
 
