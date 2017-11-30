@@ -11,7 +11,7 @@ export default class State {
   }
 
   static init() {
-    return new State(0, 0);
+    return new State();
   }
 
   setk(point) {
