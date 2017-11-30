@@ -8,6 +8,25 @@ export default class PFA {
 
   }
 
+  static init() {
+    return new PFA();
+  }
+
+  setInitialState(initialState) {
+    this.init = initialState;
+    return this;
+  }
+
+  setPolicy(policy) {
+    this.policy = policy;
+    return this;
+  }
+
+  setSamples(samples) {
+    this.samples = samples;
+    return this;
+  }
+
   approximate() {
     // iterate over SAMPLE PATHS
     for (let h = 0, lnh = this.samples.length; h < 1; h++) { // <== NOTE HARDCODED 1 LOOP (lnh) ==>

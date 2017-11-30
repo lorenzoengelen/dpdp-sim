@@ -73,7 +73,8 @@ for (let i = 0; i < 5; i++) {
   samples.push(realizations);
 } // endfor h (set sample paths H)
 
-const init = State.init()
+// create initial state
+const initialState = State.init()
   .addVehicle(2.5, 2.5)
   .addVehicle(2.5, 2.5)
   .addVehicle(2.5, 7.5)
@@ -83,8 +84,14 @@ const init = State.init()
   .addVehicle(7.5, 7.5)
   .addVehicle(7.5, 7.5);
 
-const pfa = new PFA(init, policy, samples)
-  .approximate();
+// initialize policy function approximation
+const pfa = PFA.init()
+  .setInitialState(initialState)
+  .setPolicy(policy)
+  .setSamples(samples);
+
+// approximate policy
+pfa.approximate();
 
 
 
