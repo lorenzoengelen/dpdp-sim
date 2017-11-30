@@ -1,24 +1,53 @@
 import Order from './order';
-
-// <== HARD CODED ==>
-const START_HORIZON = 0;
-const END_HORIZON = 28000000;
+import {RoutePlan} from './models/plan';
 
 export default class State {
-  constructor(k, tk, c, C, R) {
-    this.k = k;             // decision point
-    this.tk = tk;           // decision time
-    this.c = c || null;     // new customer
-    this.C = C || [];       // accepted customers
-    this.R = R || [];       // route plan
+  constructor() {
+    this.k = null;            // decision point
+    this.tk = null;           // decision time
+    this.c = null;            // new customer
+    this.C = new Array();     // accepted customers
+    this.R = new RoutePlan()  // route plan
   }
 
   static init() {
     return new State(0, 0);
   }
 
-  addVehicle(hx, hy) {
-    this.R.push({vid: this.R.length + 1, hx, hy, r: [new Order(0, hx, hy, 1, START_HORIZON, END_HORIZON, 0, 0, 0, 0), new Order(0, hx, hy, -1, START_HORIZON, END_HORIZON, 0, 0, 0, 0)]});
+  setk(point) {
+    this.k = point;
+    return this;
+  }
+
+  setDecisionPoint(point) {
+    this.setk(point);
+    return this;
+  }
+
+  setDecisionTime(time) {
+    this.tk = time;
+    return this;
+  }
+
+  setNewCustomer(customer) {
+    return this;
+  }
+
+  setAcceptedCustomers(customers) {
+    return this;
+  }
+
+  setRoutePlan(plan) {
+    return this;
+  }
+
+  addVehicle(xHomeLocation, yHomeLocation) {
+    this.addRoute(xHomeLocation, yHomeLocation);
+    return this;
+  }
+
+  addRoute(hx, hy) {
+    this.R.addRoute(hx, hy);
     return this;
   }
 }
