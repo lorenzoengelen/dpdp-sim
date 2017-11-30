@@ -7,6 +7,8 @@ export function distance(x1, y1, x2, y2) {
 };
 
 // TRAVEL TIME
-export function tt(x1, y1, x2, y2) {
+export function travelTime(x1, y1, x2, y2) {
   return distance(x1, y1, x2, y2) / TRAVEL_SPEED * MS_IN_HOUR;
 };
+
+export const tt = travelTime;
