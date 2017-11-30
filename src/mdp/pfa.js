@@ -5,6 +5,9 @@ export default class PFA {
     this.initialState = null; 
     this.policyFunction = null;
     this.samples = null;
+
+    this.decisionStates = new Array();
+    this.postDecisionStates = new Array();
   }
 
   static init() {
@@ -26,6 +29,7 @@ export default class PFA {
     return this;
   }
 
+  // SAMPLE AVERAGE APPROXIMATION (SAA) (Fu, 2015)
   approximate() {
     // iterate over SAMPLE PATHS
     for (let h = 0, lnh = this.samples.length; h < 1; h++) { // <== NOTE HARDCODED 1 LOOP (lnh) ==>
