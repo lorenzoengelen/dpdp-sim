@@ -1,7 +1,7 @@
 import {distance, travelTime, tt} from '../utils/utils';
 import Order from './order';
 
-export default function policy(state) {
+export function policy(state) {
   // CHEAPEST INSERTION HEURISTIC
 
   const {k, tk, c, C, R} = state;
@@ -45,3 +45,21 @@ export default function policy(state) {
   const postDecisionState = state;
   return postDecisionState;
 };
+
+// MYOPIC POLICY - CHEAPEST INSERTION HEURISTIC
+export const myopic = state => {
+  return 'myopic';
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
