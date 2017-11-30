@@ -1,31 +1,56 @@
 export class Order {
   constructor() {
     this.id = null;
-    this.x = null;
-    this.y = null;
+    this.xLocation = null;
+    this.yLocation = null;
     this.quantity = null;
-    this.earliestTime = null;
-    this.latestTime = null;
-    this.serviceTime = null;
+    this.earliestServiceTime = null;
+    this.latestServiceTime = null;
+    this.serviceTimeDuration = null;
     this.arrivalTime = null;
     this.waitingTime = null;
   }
-};
 
-export class PickupOrder extends Order {
-    constructor() {
-        super();
-    }
-};
+  static init() {
+    return new Order();
+  }
 
-export class DeliveryOrder extends Order {
-    constructor() {
-        super();
-    }
-};
+  setId(orderId) {
+    this.id = orderId;
+    return this;
+  }
 
-export class HomeOrder extends Order {
-    constructor() {
-        super();
-    }
-};
+  setLocation(x, y) {
+    this.xLocation = x;
+    this.yLocation = y;
+    return this;
+  }
+
+  setQuantity(q) {
+    this.quantity = q;
+    return this;
+  }
+
+  setTimeWindow(earliest, latest) {
+    this.earliestServiceTime = earliest;
+    this.latestServiceTime = latest;
+    return this;
+  }
+
+  setServiceTimeDuration(duration) {
+    this.serviceTimeDuration = duration;
+    return this;
+  }
+
+  setArrivalTime(time) {
+    this.arrivalTime = time;
+    this.waitingTime = Math.max(this.earliestServiceTime - this.arrivalTime, 0);
+    return this;
+  }
+}; // endClass Order
+
+export class Pickup extends Order {};
+
+export class Delivery extends Order {};
+
+export class Home extends Order {};
