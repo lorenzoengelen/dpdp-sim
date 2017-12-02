@@ -1,3 +1,5 @@
+import { distance, tt } from '../../utils/utils';
+
 export class Order {
   constructor() {
     this.id = null;
@@ -31,6 +33,11 @@ export class Order {
         .setTimeWindow(earliestServiceTime, latestServiceTime)
         .setServiceTimeDuration(serviceTimeDuration)
         .setArrivalTime(arrivalTime);
+  }
+
+  getTravelTimeTo(order) {
+    const { xLocation, yLocation } = order;
+    return tt(this.xLocation, this.yLocation, xLocation, yLocation);
   }
 
   setId(orderId) {
