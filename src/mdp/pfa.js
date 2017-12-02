@@ -44,7 +44,7 @@ export default class PFA {
       const postDecisionStates = new Array(initialState);
 
       // iterate over REALIZATIONS
-      for (let k = 0; k < 10/*K*/; k++) {
+      for (let k = 0; k < 1/*K*/; k++) {
         // set REALIZATION
         const realization = path[k];
         const {announceTime} = realization;
@@ -55,8 +55,7 @@ export default class PFA {
           .setDecisionPoint(k + 1)
           .setDecisionTime(announceTime)
           .setNewCustomer(realization);
-        
-        console.log(decisionState)
+        decisionStates.push(decisionState);
 
         // POST-DECISION STATE - the policy maps the DECISION STATE to a POST-DECISION STATE
         // return a new state

@@ -48,7 +48,17 @@ export function policy(state) {
 
 // MYOPIC POLICY - CHEAPEST INSERTION HEURISTIC
 export const myopic = state => {
-  return 'myopic';
+
+  // set CUSTOMER and ROUTE PLAN
+  const {c, R} = state;
+  // iterate over ROUTES
+  const {m, routes} = R;
+  for (let i = 0; i < m; i++) {
+    const route = routes[i];
+    console.log(route);
+  }
+
+  return 'post-decision state';
 };
 
 

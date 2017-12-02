@@ -107,7 +107,6 @@ const pfa = PFA.init()
 
 console.log(pfa);
 
-
 // APPROXIMATE policy
 pfa.approximate();
 
