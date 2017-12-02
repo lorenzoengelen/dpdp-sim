@@ -82,7 +82,7 @@ export class Route {
               .insertDelivery(d, newDelivery);
 
             console.log(routeWithNewPickupAndNewDelivery);
-            
+
           } // endif delivery feasibility
         }// endfor iterate over delivery insertion spots
 
@@ -158,7 +158,7 @@ export class Route {
       yDeliveryLocation,
       earliestDeliveryTime,
       latestDeliveryTime,
-      derliveryServiceTime } = customer;
+      deliveryServiceTime } = customer;
     const newPickup = Pickup.init()
       .setId(k)
       .setLocation(xPickupLocation, yPickupLocation)
@@ -170,7 +170,7 @@ export class Route {
       .setLocation(xDeliveryLocation, yDeliveryLocation)
       .setQuantity(-1)
       .setTimeWindow(earliestDeliveryTime, latestDeliveryTime)
-      .setServiceTimeDuration(derliveryServiceTime);
+      .setServiceTimeDuration(deliveryServiceTime);
     return { newPickup, newDelivery };
   }
 
