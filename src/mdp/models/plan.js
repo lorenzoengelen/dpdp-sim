@@ -1,4 +1,5 @@
-import {Pickup, Delivery, Home} from './order';
+import { Order, Pickup, Delivery, Home } from './order';
+import { distance, tt } from '../../utils/utils';
 
 // <== HARD CODED ==>
 const START_HORIZON = 0;
@@ -44,6 +45,7 @@ export class RoutePlan {
 export class Route {
   constructor() {
     this.id = null;
+    this.h = 0; // customer visits assigned to vehicle
     this.xHomeLocation = null;
     this.yHomeLocation = null;
     this.visits = new Array();
@@ -63,7 +65,66 @@ export class Route {
 
   cheapestInsertion(customer) {
     const { newPickup, newDelivery } = this.newPickupAndDelivery(customer);
-    console.log(newPickup, newDelivery);
+    const { h, visits } = this;
+
+    // #spots to insert pickup
+    const pickupSpots = h + 1;
+
+    for (let p = 0; p < pickupSpots; p++) {
+      // check feasibility to insert PICKUP after visit in current PLANNED ROUTE
+      if (this.feasibleInsertion(p, newPickup)) {
+        // if feasible, insert PICKUP
+        
+        // const newRouteWithPickup = Route.clone(this)
+        //   .insertPickup(p, newPickup);
+
+      } // endif pickup feasibility
+    }
+
+    // return new route
+    return Route.clone(this);
+  }
+
+  feasibleInsertion(afterIndex, newOrder) {
+    const lastIndex = this.h + 1;
+
+    const temporaryRoute = Route.clone(this)
+      .insertOrder(afterIndex, newOrder);
+
+
+    return true;
+  }
+
+  insertOrder(afterIndex, order) {
+    let newInsert;
+    order.quantity === 1 ? newInsert = Pickup.clone(order) : newInsert = Delivery.clone(order);
+    this.visits.splice(afterIndex + 1, 0, newInsert);
+    this.updateArrivalTimeAndWaitingTime(afterIndex);
+    console.log('after update', this.visits);
+    return this;
+  }
+
+  updateArrivalTimeAndWaitingTime(startIndex) {
+    const updateArrivalTime = (index, newArrivalTime) => {
+      newArrivalTime = newArrivalTime || this.visits[index].arrivalTime;
+      this.visits[index].setArrivalTime(newArrivalTime);
+      if (index !== this.visits.length - 1) {
+        const { arrivalTime, waitingTime, serviceTimeDuration } = this.visits[index];
+        const nextArrivalTime = arrivalTime + waitingTime + serviceTimeDuration + this.visits[index].getTravelTimeTo(this.visits[index + 1]);
+        updateArrivalTime(index + 1, nextArrivalTime); 
+      }
+    };
+    updateArrivalTime(startIndex);
+    return this;
+  }
+
+  insertPickup(afterIndex, pickup) {
+    this.insertOrder(afterIndex, pickup);
+    return this;
+  }
+
+  insertDelivery(afterIndex, delivery) {
+    this.insertOrder(afterIndex, delivery);
     return this;
   }
 
@@ -99,6 +160,11 @@ export class Route {
 
   setId(id) {
     this.id = id;
+    return this;
+  }
+
+  seth(h) {
+    this.h = h;
     return this;
   }
 
