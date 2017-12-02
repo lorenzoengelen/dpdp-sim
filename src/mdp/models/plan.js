@@ -86,7 +86,15 @@ export class Route {
 
   setVisits(visits) { // TODO
     visits.forEach(visit => {
-      const {id, xLocation, yLocation, quantity, earliestServiceTime, latestServiceTime, serviceTimeDuration, arrivalTime, waitingTime} = visit;
+      const { id,
+        xLocation,
+        yLocation,
+        quantity,
+        earliestServiceTime,
+        latestServiceTime,
+        serviceTimeDuration,
+        arrivalTime,
+        waitingTime } = visit;
       const pushOrder = order => {
         return order.init()
           .setId(id)
