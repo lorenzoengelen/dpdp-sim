@@ -1,4 +1,5 @@
 import Order from './order';
+import {Realization} from './samples';
 import {RoutePlan} from './models/plan';
 
 export default class State {
@@ -19,7 +20,7 @@ export default class State {
     return State.init()
       .setDecisionPoint(k)
       .setDecisionTime(tk)
-      .setNewCustomer(c) // TODO
+      .setNewCustomer(c)
       .setAcceptedCustomers(C) // TODO
       .setRoutePlan(R);
   }
@@ -40,7 +41,34 @@ export default class State {
   }
 
   setNewCustomer(customer) {
-    this.c = customer;
+    if (customer !== null) {
+      const { k,
+        alpha,
+        announceTime,
+        reactionTime,
+        xPickupLocation,
+        yPickupLocation,
+        earliestPickupTime,
+        latestPickupTime,
+        pickupServiceTime,
+        xDeliveryLocation,
+        yDeliveryLocation,
+        earliestDeliveryTime,
+        latestDeliveryTime,
+        deliveryServiceTime } = customer;
+      this.c = Realization.init()
+        .setk(k)
+        .setAlpha(alpha)
+        .setAnnounceTime(announceTime)
+        .setPickupLocation(xPickupLocation, yPickupLocation)
+        .setPickupTimeWindow(earliestPickupTime, latestPickupTime)
+        .setPickupServiceTime(pickupServiceTime)
+        .setDeliveryLocation(xDeliveryLocation, yDeliveryLocation)
+        .setDeliveryTimeWindow(earliestDeliveryTime, latestDeliveryTime)
+        .setDeliveryServiceTime(deliveryServiceTime);
+    } else {
+      this.c = customer;
+    }
     return this;
   }
 
