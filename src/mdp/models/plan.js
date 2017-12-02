@@ -62,7 +62,39 @@ export class Route {
   }
 
   cheapestInsertion(customer) {
+    const { newPickup, newDelivery } = this.newPickupAndDelivery(customer);
+    console.log(newPickup, newDelivery);
     return this;
+  }
+
+  newPickupAndDelivery(customer) {
+    const { k,
+      alpha,
+      announceTime,
+      reactionTime,
+      xPickupLocation,
+      yPickupLocation,
+      earliestPickupTime,
+      latestPickupTime,
+      pickupServiceTime,
+      xDeliveryLocation,
+      yDeliveryLocation,
+      earliestDeliveryTime,
+      latestDeliveryTime,
+      derliveryServiceTime } = customer;
+    const newPickup = Pickup.init()
+      .setId(k)
+      .setLocation(xPickupLocation, yPickupLocation)
+      .setQuantity(1)
+      .setTimeWindow(earliestPickupTime, latestPickupTime)
+      .setServiceTimeDuration(pickupServiceTime);
+    const newDelivery = Delivery.init()
+      .setId(k)
+      .setLocation(xDeliveryLocation, yDeliveryLocation)
+      .setQuantity(-1)
+      .setTimeWindow(earliestDeliveryTime, latestDeliveryTime)
+      .setServiceTimeDuration(derliveryServiceTime);
+    return { newPickup, newDelivery };
   }
 
   setId(id) {
