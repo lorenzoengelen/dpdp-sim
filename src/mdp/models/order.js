@@ -12,7 +12,7 @@ export class Order {
   }
 
   static init() {
-    return new Order();
+    return new this();
   }
 
   static clone(order) {
@@ -67,20 +67,8 @@ export class Order {
   }
 }; // endClass Order
 
-export class Pickup extends Order {
-    static init() {
-        return new Pickup();
-    }
-};
+export class Pickup extends Order {};
 
-export class Delivery extends Order {
-    static init() {
-        return new Delivery();
-    }
-};
+export class Delivery extends Order {};
 
-export class Home extends Order {
-    static init() {
-        return new Home();
-    }
-};
+export class Home extends Order {};
