@@ -15,6 +15,24 @@ export class Order {
     return new Order();
   }
 
+  static clone(order) {
+    const { id,
+        xLocation,
+        yLocation,
+        quantity,
+        earliestServiceTime,
+        latestServiceTime,
+        serviceTimeDuration,
+        arrivalTime } = order;
+    return this.init()
+        .setId(id)
+        .setLocation(xLocation, yLocation)
+        .setQuantity(quantity)
+        .setTimeWindow(earliestServiceTime, latestServiceTime)
+        .setServiceTimeDuration(serviceTimeDuration)
+        .setArrivalTime(arrivalTime);
+  }
+
   setId(orderId) {
     this.id = orderId;
     return this;
