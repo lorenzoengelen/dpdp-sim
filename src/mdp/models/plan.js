@@ -86,21 +86,29 @@ export class Route {
   }
 
   feasibleInsertion(afterIndex, newOrder) {
-    const lastIndex = this.h + 1;
-
     const temporaryRoute = Route.clone(this)
       .insertOrder(afterIndex, newOrder);
-
-
-    return true;
+    const { h, visits } = temporaryRoute;
+    
+    const checkTimeWindowViolation = i => {
+      const { arrivalTime, latestServiceTime } = visits[i];
+      let violation = false;
+      if (arrivalTime > latestServiceTime) return true;
+      if (i < h + 1) {
+        violation = checkTimeWindowViolation(i + 1);
+      }
+      return violation;
+    };
+    const timeWindowViolation = checkTimeWindowViolation(afterIndex + 1);
+    return !timeWindowViolation;
   }
 
   insertOrder(afterIndex, order) {
     let newInsert;
     order.quantity === 1 ? newInsert = Pickup.clone(order) : newInsert = Delivery.clone(order);
     this.visits.splice(afterIndex + 1, 0, newInsert);
+    this.seth(this.h + 1);
     this.updateArrivalTimeAndWaitingTime(afterIndex);
-    console.log('after update', this.visits);
     return this;
   }
 
