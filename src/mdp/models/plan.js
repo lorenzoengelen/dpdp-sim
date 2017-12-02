@@ -61,6 +61,10 @@ export class Route {
       .setVisits(visits);
   }
 
+  cheapestInsertion(customer) {
+    return this;
+  }
+
   setId(id) {
     this.id = id;
     return this;
