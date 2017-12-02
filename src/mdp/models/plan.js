@@ -65,21 +65,29 @@ export class Route {
 
   cheapestInsertion(customer) {
     const { newPickup, newDelivery } = this.newPickupAndDelivery(customer);
-    const { h, visits } = this;
+    const { h } = this;
 
-    // #spots to insert pickup
-    const pickupSpots = h + 1;
-
-    for (let p = 0; p < pickupSpots; p++) {
+    for (let p = 0; p < h + 1; p++) {
       // check feasibility to insert PICKUP after visit in current PLANNED ROUTE
       if (this.feasibleInsertion(p, newPickup)) {
         // if feasible, insert PICKUP
-        
-        // const newRouteWithPickup = Route.clone(this)
-        //   .insertPickup(p, newPickup);
+        const routeWithNewPickup = Route.clone(this)
+          .insertPickup(p, newPickup);
+        const { h } = routeWithNewPickup;
+
+        for (let d = p + 1; d < h + 1; d++) {
+          // check feasibility
+          if (routeWithNewPickup.feasibleInsertion(d, newDelivery)) {
+            const routeWithNewPickupAndNewDelivery = Route.clone(routeWithNewPickup)
+              .insertDelivery(d, newDelivery);
+
+            console.log(routeWithNewPickupAndNewDelivery);
+            
+          } // endif delivery feasibility
+        }// endfor iterate over delivery insertion spots
 
       } // endif pickup feasibility
-    }
+    } // endfor iterate over pickup insertion spots
 
     // return new route
     return Route.clone(this);
@@ -89,7 +97,7 @@ export class Route {
     const temporaryRoute = Route.clone(this)
       .insertOrder(afterIndex, newOrder);
     const { h, visits } = temporaryRoute;
-    
+
     const checkTimeWindowViolation = i => {
       const { arrivalTime, latestServiceTime } = visits[i];
       let violation = false;
