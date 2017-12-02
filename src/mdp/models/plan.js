@@ -53,6 +53,14 @@ export class Route {
     return new Route();
   }
 
+  static clone(route) {
+    const { id, xHomeLocation, yHomeLocation, visits } = JSON.parse(JSON.stringify(route));
+    return Route.init()
+      .setId(id)
+      .setHomeLocation(xHomeLocation, yHomeLocation)
+      .setVisits(visits);
+  }
+
   setId(id) {
     this.id = id;
     return this;
