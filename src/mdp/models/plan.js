@@ -71,17 +71,17 @@ export class Route {
       // check feasibility to insert PICKUP after visit in current PLANNED ROUTE
       if (this.feasibleInsertion(p, newPickup)) {
         // if feasible, insert PICKUP
-        const routeWithNewPickup = Route.clone(this)
+        const routeWithPickup = Route.clone(this)
           .insertPickup(p, newPickup);
-        const { h } = routeWithNewPickup;
+        const { h } = routeWithPickup;
 
         for (let d = p + 1; d < h + 1; d++) {
           // check feasibility
-          if (routeWithNewPickup.feasibleInsertion(d, newDelivery)) {
-            const routeWithNewPickupAndNewDelivery = Route.clone(routeWithNewPickup)
+          if (routeWithPickup.feasibleInsertion(d, newDelivery)) {
+            const routeWithPickupAndDelivery = Route.clone(routeWithPickup)
               .insertDelivery(d, newDelivery);
 
-            console.log(routeWithNewPickupAndNewDelivery);
+            console.log(routeWithPickupAndDelivery);
 
           } // endif delivery feasibility
         }// endfor iterate over delivery insertion spots
