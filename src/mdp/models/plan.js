@@ -15,6 +15,22 @@ export class RoutePlan {
     return new RoutePlan();
   }
 
+  getPlanWaitingTime() {
+    return 0;
+  }
+
+  getPlanServiceTime() {
+    return 0;
+  }
+
+  getPlanTravelTime() {
+    return 0;
+  }
+
+  getPlanExecutionTime() {
+    return 0;
+  }
+
   setm(m) {
     this.m = m;
     return this;
@@ -90,7 +106,7 @@ export class Route {
             // if insertion cost of new route is smaller than insertion of a previous route, set new route
             if (newRouteCost - plannedRouteCost < insertionCost) {
               insertionCost = newRouteCost - plannedRouteCost;
-              newRoute = routeWithPickupAndDelivery;
+              newRoute = Route.clone(routeWithPickupAndDelivery);
             } // endif check insertion cost
 
           } // endif delivery feasibility
