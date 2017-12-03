@@ -25,6 +25,28 @@ export default class State {
       .setRoutePlan(R);
   }
 
+  addVehicle(xHomeLocation, yHomeLocation) {
+    this.addRoute(xHomeLocation, yHomeLocation);
+    return this;
+  }
+
+  addRoute(hx, hy) {
+    this.R.addRoute(hx, hy);
+    return this;
+  }
+
+  updateRouteInRoutePlan(updatedRoute) {
+    return this;
+  }
+
+  acceptCustomer() {
+    return this;
+  }
+
+  rejectCustomer() {
+    return this;
+  }
+
   setk(point) {
     this.k = point;
     return this;
@@ -103,15 +125,5 @@ export default class State {
 
   getRoutePlan() {
     return this.R;
-  }
-
-  addVehicle(xHomeLocation, yHomeLocation) {
-    this.addRoute(xHomeLocation, yHomeLocation);
-    return this;
-  }
-
-  addRoute(hx, hy) {
-    this.R.addRoute(hx, hy);
-    return this;
   }
 } // endClass State
