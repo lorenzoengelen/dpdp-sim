@@ -22,19 +22,37 @@ export class RoutePlan {
   }
 
   getPlanWaitingTime() {
-    return 0;
+    let totalWaitingTime = 0;
+    this.routes.forEach(route => {
+      totalWaitingTime = totalWaitingTime + route.getRouteWaitingTime();
+    });
+    return totalWaitingTime;
   }
 
   getPlanServiceTime() {
-    return 0;
+    let totalServiceTime = 0;
+    this.routes.forEach(route => {
+      totalServiceTime = totalServiceTime + route.getRouteServiceTime();
+    });
+    return totalServiceTime;
   }
 
   getPlanTravelTime() {
-    return 0;
+    let totalTravelTime = 0;
+    this.routes.forEach(route => {
+      totalTravelTime = totalTravelTime + route.getRouteTravelTime();
+    });
+    return totalTravelTime;
   }
 
   getPlanExecutionTime() {
-    return 0;
+    let maxExecutionTime = 0;
+    this.routes.forEach(route => {
+      if (route.getRouteExecutionTime() > maxExecutionTime) {
+        maxExecutionTime = route.getRouteExecutionTime();
+      }
+    });
+    return maxExecutionTime;
   }
 
   setm(m) {
