@@ -82,10 +82,9 @@ export class Route {
               .insertDelivery(d, newDelivery);
 
             // console.log(routeWithPickupAndDelivery);
-            console.log('waitingTime', routeWithPickupAndDelivery.getRouteWaitingTime(),
-              'serviceTime', routeWithPickupAndDelivery.getRouteServiceTime(),
-              'travel time', routeWithPickupAndDelivery.getRouteTravelTime(),
-              'execution time', routeWithPickupAndDelivery.getRouteExecutionTime());
+            console.log(routeWithPickupAndDelivery.getRouteExecutionTime());
+
+
 
           } // endif delivery feasibility
         }// endfor iterate over delivery insertion spots
@@ -198,11 +197,16 @@ export class Route {
 
   getRouteTravelTime() {
     let routeTravelTime = 0;
-    return null;
+    // getTravelTimeTo(order)
+    for (let v = 0; v <= this.h; v++) {
+      const travelTime = this.visits[v].getTravelTimeTo(this.visits[v + 1]);
+      routeTravelTime = routeTravelTime + travelTime;
+    }
+    return routeTravelTime;
   }
 
   getRouteExecutionTime() {
-    return null;
+    return this.visits[this.h + 1].arrivalTime;
   }
 
   setId(id) {
