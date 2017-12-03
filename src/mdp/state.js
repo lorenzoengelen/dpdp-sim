@@ -36,6 +36,7 @@ export default class State {
   }
 
   updateRouteInRoutePlan(updatedRoute) {
+    this.R.updateRoute(updatedRoute);
     return this;
   }
 
