@@ -50,6 +50,27 @@ export default class State {
     return this;
   }
 
+  getRoutePlanWaitingTime() {
+    return this.R.getPlanWaitingTime();
+  }
+
+  getRoutePlanServiceTime() {
+    return this.R.getPlanServiceTime();
+  }
+
+  getRoutePlanTravelTime() {
+    return this.R.getPlanTravelTime();
+  }
+
+  getRoutePlanExecutionTime() {
+    return this.R.getPlanExecutionTime();
+  }
+
+  getRoutePlanCost() {
+    // OBJECTIVE FUNCTION
+    return this.getRoutePlanTravelTime();
+  }
+
   setk(point) {
     this.k = point;
     return this;
