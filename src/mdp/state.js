@@ -7,7 +7,7 @@ export default class State {
     this.k = null;            // decision point
     this.tk = null;           // decision time
     this.c = null;            // new customer
-    this.C = new Array();     // accepted customers
+    this.C = new Array();     // customers
     this.R = new RoutePlan()  // route plan
   }
 
@@ -40,11 +40,13 @@ export default class State {
     return this;
   }
 
-  acceptCustomer() {
+  acceptCustomer(customer) {
+    this.C.push(customer.accept());
     return this;
   }
 
-  rejectCustomer() {
+  rejectCustomer(customer) {
+    this.C.push(customer.reject());
     return this;
   }
 
