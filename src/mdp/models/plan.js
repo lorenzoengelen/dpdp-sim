@@ -68,8 +68,6 @@ export class Route {
     const { newPickup, newDelivery } = this.newPickupAndDelivery(customer);
     const { h } = this;
 
-    console.log('this', this);
-
     for (let p = 0; p < h + 1; p++) {
       // check feasibility to insert new PICKUP
       if (this.feasibleInsertion(p, newPickup)) {
@@ -83,7 +81,7 @@ export class Route {
             const routeWithPickupAndDelivery = Route.clone(routeWithPickup)
               .insertDelivery(d, newDelivery);
 
-            console.log('with pickup and delivery', routeWithPickupAndDelivery);
+            console.log('P&D', routeWithPickupAndDelivery);
 
           } // endif delivery feasibility
         }// endfor iterate over delivery insertion spots
@@ -174,6 +172,22 @@ export class Route {
       .setTimeWindow(earliestDeliveryTime, latestDeliveryTime)
       .setServiceTimeDuration(deliveryServiceTime);
     return { newPickup, newDelivery };
+  }
+
+  getRouteWaitingTime() {
+    return null;
+  }
+
+  getRouteServiceTime() {
+    return null;
+  }
+
+  getRouteTravelTime() {
+    return null;
+  }
+
+  getRouteExecutionTime() {
+    return this.getRouteWaitingTime() + this.getRouteServiceTime() + this.getRouteTravelTime();
   }
 
   setId(id) {
