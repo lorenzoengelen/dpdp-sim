@@ -18,7 +18,7 @@ export const myopic = decisionState => {
   const routeToUpdate = null;
 
   // iterate over ROUTES
-  for (let i = 0; i < m; i++) {
+  for (let i = 0; i < 1/*m*/; i++) {
     const plannedRoute = routes[i];
     // return new route after CHEAPEST INSERTION
     const newRoute = plannedRoute.cheapestInsertion(c);

@@ -56,9 +56,10 @@ export class Route {
   }
 
   static clone(route) {
-    const { id, xHomeLocation, yHomeLocation, visits } = JSON.parse(JSON.stringify(route));
+    const { id, h, xHomeLocation, yHomeLocation, visits } = JSON.parse(JSON.stringify(route));
     return Route.init()
       .setId(id)
+      .seth(h)
       .setHomeLocation(xHomeLocation, yHomeLocation)
       .setVisits(visits);
   }
@@ -67,21 +68,22 @@ export class Route {
     const { newPickup, newDelivery } = this.newPickupAndDelivery(customer);
     const { h } = this;
 
+    console.log('this', this);
+
     for (let p = 0; p < h + 1; p++) {
-      // check feasibility to insert PICKUP after visit in current PLANNED ROUTE
+      // check feasibility to insert new PICKUP
       if (this.feasibleInsertion(p, newPickup)) {
-        // if feasible, insert PICKUP
         const routeWithPickup = Route.clone(this)
           .insertPickup(p, newPickup);
         const { h } = routeWithPickup;
 
         for (let d = p + 1; d < h + 1; d++) {
-          // check feasibility
+          // check feasibility to insert new DELIVERY after according PICKUP
           if (routeWithPickup.feasibleInsertion(d, newDelivery)) {
             const routeWithPickupAndDelivery = Route.clone(routeWithPickup)
               .insertDelivery(d, newDelivery);
 
-            console.log(routeWithPickupAndDelivery);
+            console.log('with pickup and delivery', routeWithPickupAndDelivery);
 
           } // endif delivery feasibility
         }// endfor iterate over delivery insertion spots
