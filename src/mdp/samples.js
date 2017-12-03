@@ -64,6 +64,16 @@ export class Realization {
     return new Realization();
   }
 
+  accept() {
+    this.alpha = 1;
+    return this;
+  }
+
+  reject() {
+    this.alpha = 0;
+    return this;
+  }
+
   setk(decisionPoint) {
     this.k = decisionPoint;
     return this;
