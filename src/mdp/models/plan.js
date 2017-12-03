@@ -68,6 +68,10 @@ export class Route {
     const { newPickup, newDelivery } = this.newPickupAndDelivery(customer);
     const { h } = this;
 
+    const plannedRouteCost = this.getRouteTravelTime();
+    let insertionCost = Infinity;
+    let newRoute = null;
+
     for (let p = 0; p < h + 1; p++) {
       // check feasibility to insert new PICKUP
       if (this.feasibleInsertion(p, newPickup)) {
@@ -81,10 +85,13 @@ export class Route {
             const routeWithPickupAndDelivery = Route.clone(routeWithPickup)
               .insertDelivery(d, newDelivery);
 
-            // console.log(routeWithPickupAndDelivery);
-            console.log(routeWithPickupAndDelivery.getRouteExecutionTime());
-
-
+            // compute cost of new route
+            const newRouteCost = routeWithPickupAndDelivery.getRouteTravelTime();
+            // if insertion cost of new route is smaller than insertion of a previous route, set new route
+            if (newRouteCost - plannedRouteCost < insertionCost) {
+              insertionCost = newRouteCost - plannedRouteCost;
+              newRoute = routeWithPickupAndDelivery;
+            } // endif check insertion cost
 
           } // endif delivery feasibility
         }// endfor iterate over delivery insertion spots
@@ -93,7 +100,7 @@ export class Route {
     } // endfor iterate over pickup insertion spots
 
     // return new route
-    return Route.clone(this);
+    return newRoute;
   }
 
   feasibleInsertion(afterIndex, newOrder) {

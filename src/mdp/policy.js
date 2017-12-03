@@ -22,7 +22,7 @@ export const myopic = decisionState => {
     const plannedRoute = routes[i];
     // return new route after CHEAPEST INSERTION
     const newRoute = plannedRoute.cheapestInsertion(c);
-
+    console.log(newRoute);
 
   }
 
