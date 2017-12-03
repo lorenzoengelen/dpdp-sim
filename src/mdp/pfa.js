@@ -33,7 +33,7 @@ export default class PFA {
   approximate() {
     const {H, paths} = this.samples;
     // iterate over SAMPLES
-    for (let h = 0; h < 1/*H*/; h++) {
+    for (let h = 0; h < 2/*H*/; h++) {
       
       // set SAMPLE PATH
       const {K, path} = paths[h];
