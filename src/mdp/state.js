@@ -21,7 +21,7 @@ export default class State {
       .setDecisionPoint(k)
       .setDecisionTime(tk)
       .setNewCustomer(c)
-      .setAcceptedCustomers(C) // TODO
+      .setCustomers(C) // TODO
       .setRoutePlan(R);
   }
 
@@ -95,7 +95,7 @@ export default class State {
     return this;
   }
 
-  setAcceptedCustomers(customers) {
+  setCustomers(customers) {
     this.C = customers;
     return this;
   }
