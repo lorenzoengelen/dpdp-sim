@@ -84,7 +84,7 @@ export class Route {
     const { newPickup, newDelivery } = this.newPickupAndDelivery(customer);
     const { h } = this;
 
-    const plannedRouteCost = this.getRouteTravelTime();
+    const plannedRouteCost = this.getRouteCost();
     let insertionCost = Infinity;
     let newRoute = this;
 
@@ -102,9 +102,10 @@ export class Route {
               .insertDelivery(d, newDelivery);
 
             // compute cost of new route
-            const newRouteCost = routeWithPickupAndDelivery.getRouteTravelTime();
+            const newRouteCost = routeWithPickupAndDelivery.getRouteCost();
             // if insertion cost of new route is smaller than insertion of a previous route, set new route
             if (newRouteCost - plannedRouteCost < insertionCost) {
+              // COST = INCREASE IN TRAVEL TIME
               insertionCost = newRouteCost - plannedRouteCost;
               newRoute = routeWithPickupAndDelivery;
             } // endif check insertion cost
@@ -230,6 +231,11 @@ export class Route {
 
   getRouteExecutionTime() {
     return this.visits[this.h + 1].arrivalTime;
+  }
+
+  getRouteCost() {
+    // OBJECTIVE FUNCTION
+    return this.getRouteTravelTime();
   }
 
   getOrders() {
