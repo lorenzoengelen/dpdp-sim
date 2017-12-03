@@ -71,6 +71,18 @@ export default class State {
     return this.getRoutePlanTravelTime();
   }
 
+  getAcceptedCustomers() {
+    let numberOfAcceptedCustomers = 0;
+    this.C.forEach(({alpha}) => {
+      if (alpha) numberOfAcceptedCustomers++;
+    });
+    return numberOfAcceptedCustomers;
+  }
+
+  getRejectedCustomers() {
+    return this.C.length - this.getAcceptedCustomers();
+  }
+
   setk(point) {
     this.k = point;
     return this;
@@ -168,7 +180,7 @@ export default class State {
     return this.c;
   }
 
-  getAcceptedCustomers() {
+  getCustomers() {
     return this.C;
   }
 
