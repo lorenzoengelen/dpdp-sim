@@ -45,9 +45,10 @@ export class RoutePlan {
   setRoutes(routes) {
     // this.routes = routes;
     routes.forEach(route => {
-      const {id, xHomeLocation, yHomeLocation, visits} = route;
+      const {id, h, xHomeLocation, yHomeLocation, visits} = route;
       this.routes.push(Route.init()
         .setId(id)
+        .seth(h)
         .setHomeLocation(xHomeLocation, yHomeLocation)
         .setVisits(visits));
     });
