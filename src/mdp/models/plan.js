@@ -180,9 +180,8 @@ export class Route {
 
   getRouteWaitingTime() {
     let routeWaitingTime = 0;
-    const { h, visits } = this;
-    for (let v = 1; v <= h; v++) {
-      const { waitingTime } = visits[v];
+    for (let v = 1; v <= this.h; v++) {
+      const { waitingTime } = this.visits[v];
       routeWaitingTime = routeWaitingTime + waitingTime;
     }
     return routeWaitingTime;
@@ -190,7 +189,11 @@ export class Route {
 
   getRouteServiceTime() {
     let routeServiceTime = 0;
-    return null;
+    for (let v = 1; v <= this.h; v++) {
+      const { serviceTimeDuration } = this.visits[v];
+      routeServiceTime = routeServiceTime + serviceTimeDuration;
+    }
+    return routeServiceTime;
   }
 
   getRouteTravelTime() {
