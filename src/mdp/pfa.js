@@ -44,7 +44,7 @@ export default class PFA {
       const postDecisionStates = new Array(initialState);
 
       // iterate over REALIZATIONS
-      for (let k = 0; k < 2/*K*/; k++) {
+      for (let k = 0; k < K; k++) {
         // set REALIZATION
         const realization = path[k];
         const {announceTime} = realization;
