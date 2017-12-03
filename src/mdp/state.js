@@ -21,7 +21,7 @@ export default class State {
       .setDecisionPoint(k)
       .setDecisionTime(tk)
       .setNewCustomer(c)
-      .setCustomers(C) // TODO
+      .setCustomers(C)
       .setRoutePlan(R);
   }
 
@@ -98,7 +98,32 @@ export default class State {
   }
 
   setCustomers(customers) {
-    this.C = customers;
+    customers.forEach(customer => {
+      const { k,
+        alpha,
+        announceTime,
+        reactionTime,
+        xPickupLocation,
+        yPickupLocation,
+        earliestPickupTime,
+        latestPickupTime,
+        pickupServiceTime,
+        xDeliveryLocation,
+        yDeliveryLocation,
+        earliestDeliveryTime,
+        latestDeliveryTime,
+        deliveryServiceTime } = customer;
+      this.C.push(Realization.init()
+        .setk(k)
+        .setAlpha(alpha)
+        .setAnnounceTime(announceTime)
+        .setPickupLocation(xPickupLocation, yPickupLocation)
+        .setPickupTimeWindow(earliestPickupTime, latestPickupTime)
+        .setPickupServiceTime(pickupServiceTime)
+        .setDeliveryLocation(xDeliveryLocation, yDeliveryLocation)
+        .setDeliveryTimeWindow(earliestPickupTime, latestPickupTime)
+        .setDeliveryServiceTime(deliveryServiceTime));
+    });
     return this;
   }
 
