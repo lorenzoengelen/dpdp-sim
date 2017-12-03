@@ -238,7 +238,7 @@ export class Route {
     return this.getRouteTravelTime();
   }
 
-  getOrders() {
+  getNumberOfCustomerVisits() {
     return this.h;
   }
 
