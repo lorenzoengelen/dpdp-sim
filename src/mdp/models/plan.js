@@ -15,6 +15,12 @@ export class RoutePlan {
     return new RoutePlan();
   }
 
+  updateRoute(updatedRoute) {
+    const { id } = updatedRoute;
+    this.routes.splice(id - 1, 1, updatedRoute);
+    return this;
+  }
+
   getPlanWaitingTime() {
     return 0;
   }
