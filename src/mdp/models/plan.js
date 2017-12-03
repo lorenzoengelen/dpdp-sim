@@ -81,7 +81,11 @@ export class Route {
             const routeWithPickupAndDelivery = Route.clone(routeWithPickup)
               .insertDelivery(d, newDelivery);
 
-            console.log('P&D', routeWithPickupAndDelivery);
+            // console.log(routeWithPickupAndDelivery);
+            console.log('waitingTime', routeWithPickupAndDelivery.getRouteWaitingTime(),
+              'serviceTime', routeWithPickupAndDelivery.getRouteServiceTime(),
+              'travel time', routeWithPickupAndDelivery.getRouteTravelTime(),
+              'execution time', routeWithPickupAndDelivery.getRouteExecutionTime());
 
           } // endif delivery feasibility
         }// endfor iterate over delivery insertion spots
@@ -175,19 +179,27 @@ export class Route {
   }
 
   getRouteWaitingTime() {
-    return null;
+    let routeWaitingTime = 0;
+    const { h, visits } = this;
+    for (let v = 1; v <= h; v++) {
+      const { waitingTime } = visits[v];
+      routeWaitingTime = routeWaitingTime + waitingTime;
+    }
+    return routeWaitingTime;
   }
 
   getRouteServiceTime() {
+    let routeServiceTime = 0;
     return null;
   }
 
   getRouteTravelTime() {
+    let routeTravelTime = 0;
     return null;
   }
 
   getRouteExecutionTime() {
-    return this.getRouteWaitingTime() + this.getRouteServiceTime() + this.getRouteTravelTime();
+    return null;
   }
 
   setId(id) {
