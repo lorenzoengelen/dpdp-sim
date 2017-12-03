@@ -44,7 +44,7 @@ export default class PFA {
       const postDecisionStates = new Array(initialState);
 
       // iterate over REALIZATIONS
-      for (let k = 0; k < 1/*K*/; k++) {
+      for (let k = 0; k < 2/*K*/; k++) {
         // set REALIZATION
         const realization = path[k];
         const {announceTime} = realization;
@@ -60,6 +60,10 @@ export default class PFA {
         // POST-DECISION STATE - the policy maps the DECISION STATE to a POST-DECISION STATE
         // return a new state
         const postDecisionState = this.policyFunction(decisionState);
+        postDecisionStates.push(postDecisionState);
+        
+        console.log('decisionState', decisionState)
+        console.log('postDecisionState', postDecisionState)
 
       } // endfor K (sample paths)
     }// endfor H (realizations)

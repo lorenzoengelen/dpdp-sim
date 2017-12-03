@@ -33,20 +33,19 @@ export const myopic = decisionState => {
     } // endif feasible insertion
   } // endfor iterate over m routes
 
-  // update a specific ROUTE
+  // UPDATE a specific ROUTE
   if (routeToUpdate) {
     // CUSTOMER ACCEPTED
     console.log('CUSTOMER ACCEPTED');
     postDecisionState.updateRouteInRoutePlan(routeToUpdate)
       .acceptCustomer(c);
-    console.log(postDecisionState);
   } else {
     // CUSTOMER REJECTED
     console.log('CUSTOMER REJECTED');
     postDecisionState.rejectCustomer(c);
-  }
+  } // endif UPDATE ROUTE and ACCEPT/REJECT CUSTOMER
 
-  return 'post-decision state';
+  return postDecisionState;
 };
 
 
