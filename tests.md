@@ -1,0 +1,12 @@
+SAMPLE dynamism = 0.80, urgency = 20
+- myopic policy
+- sample size = 50
+- vehicles = 12 (4 home locations)
+- average orders = 240
+- average accepted = 196.52 (16.38)
+- average rejected = 43.48 h 
+- average service time = 32.75 h (2.73 h)
+- average waiting time = 36.87 h (3.07 h)
+- average travel time = 23.25 h (1.94 h = 97 km)
+- average execution time = 7.77 h
+- average route plan cost = 23.35 h
