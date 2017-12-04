@@ -60,10 +60,14 @@ const initialState = State.init()
 // init SAMPLE PATH REALIZATIONS
 const samples = Samples.init();
 
-for (let i = 0; i < 50/*50*/; i++) {
+const DYNAMISM_LEVEL = '0.80';
+const URGENCY_LEVEL = '20';
+const SCALE_LEVEL = '1.00';
+
+for (let i = 0; i < 50; i++) {
   // iterate over DATA
-  const data = require(`./lon/0.80-20-1.00-${i}.scen`);
-  console.log(`LOAD ==> SAMPLE PATH: ./lon/0.80-20-1.00-${i}.scen`);
+  const data = require(`./lon/${DYNAMISM_LEVEL}-${URGENCY_LEVEL}-${SCALE_LEVEL}-${i}.scen`);
+  console.log(`LOAD ==> SAMPLE PATH: ./lon/${DYNAMISM_LEVEL}-${URGENCY_LEVEL}-${SCALE_LEVEL}-${i}.scen`);
 
   // init SAMPLE PATH
   const path = Path.init();
