@@ -60,10 +60,10 @@ const initialState = State.init()
 // init SAMPLE PATH REALIZATIONS
 const samples = Samples.init();
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 50/*50*/; i++) {
   // iterate over DATA
   const data = require(`./lon/0.80-20-1.00-${i}.scen`);
-  console.log(`SAMPLE PATH: ./lon/0.80-20-1.00-${i}.scen`);
+  console.log(`LOAD ==> SAMPLE PATH: ./lon/0.80-20-1.00-${i}.scen`);
 
   // init SAMPLE PATH
   const path = Path.init();

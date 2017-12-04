@@ -44,7 +44,7 @@ export default class PFA {
       const postDecisionStates = new Array(initialState);
 
       // iterate over REALIZATIONS
-      for (let k = 0; k < K; k++) {
+      for (let k = 0; k < K/*K*/; k++) {
         // set REALIZATION
         const realization = path[k];
         const {announceTime} = realization;
@@ -61,11 +61,13 @@ export default class PFA {
         // return a new state
         const postDecisionState = this.policyFunction(decisionState);
         postDecisionStates.push(postDecisionState);
-        
-        console.log('decisionState', decisionState)
-        console.log('postDecisionState', postDecisionState)
-
       } // endfor K (sample paths)
+
+      console.log('lastState', postDecisionStates[postDecisionStates.length - 1],
+        postDecisionStates[postDecisionStates.length - 1].getRoutePlanCost() / 1000 / 60 / 60,
+        postDecisionStates[postDecisionStates.length - 1].getAcceptedCustomers(),
+        postDecisionStates[postDecisionStates.length - 1].getRejectedCustomers())
+
     }// endfor H (realizations)
 
   } // end SAA approximation
