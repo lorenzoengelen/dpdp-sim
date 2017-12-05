@@ -33,7 +33,7 @@ export default class PFA {
     const { paths } = this.samples;
     
     let { H } = this.samples; // ONLY FOR TEST PURPOSES => CHANGE TO CONST LATER
-    // H = 2 // ==> NOTE ONLY FOR TEST PURPOSES <==
+    // H = 1 // ==> NOTE ONLY FOR TEST PURPOSES <==
 
     // SAMPLE AVERAGE APPROXIMATION (SAA) (Fu, 2015)
     let averageAcceptedCustomers = 0;
@@ -56,7 +56,7 @@ export default class PFA {
       const postDecisionStates = new Array(initialState);
 
       // iterate over REALIZATIONS
-      for (let k = 0; k < K; k++) {
+      for (let k = 0; k < K/*K*/; k++) {
         // set REALIZATION
         const realization = path[k];
         const {announceTime} = realization;

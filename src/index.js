@@ -108,9 +108,12 @@ for (let i = 0; i < 50; i++) {
 } // endfor h (iterate samples)
 
 // init POLICY FUNCTION APPROXIMATION
+const THRESHOLD_VALUE = 2.50;
+const RELAX_DISTRICTS = true;
 const pfa = PFA.init()
   .setInitialState(initialState)
-  .setPolicyFunction(myopic)
+  // .setPolicyFunction(myopic)
+  .setPolicyFunction(geographicDistricting(THRESHOLD_VALUE, RELAX_DISTRICTS))
   .setSamples(samples);
 
 console.log(pfa);

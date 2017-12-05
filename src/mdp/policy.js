@@ -7,13 +7,13 @@ import {Pickup, Delivery} from './models/order';
 export const myopic = decisionState => {
 
   // set CUSTOMER and ROUTE PLAN
-  const {c, R} = decisionState; 
+  const { c, R } = decisionState; 
   // create new POST-DECISION STATE
   const postDecisionState = State.clone(decisionState)
     .setNewCustomer(null);
 
   // set amount VEHICLES and planned ROUTES
-  const {m, routes} = R;
+  const { m, routes } = R;
 
   let routeUpdateCost = Infinity;
   let routeToUpdate = null;
@@ -48,10 +48,66 @@ export const myopic = decisionState => {
   return postDecisionState;
 };
 
-// SERVICE REGION PARTITIONING - GEOGRAPHIC DISTRICTING
-export const geographicDistricting = threshold => {
-  return (decisionState, b = threshold) => {
-    const THRESHOLD_VALUE = threshold;
+// SERVICE REGION PARTITIONING or GEOGRAPHIC DISTRICTING
+export const geographicDistricting = (thresholdValue, mayRelaxDistricts) => {
+  return decisionState => {
+    const THRESHOLD_VALUE = thresholdValue;
+    const RELAX_DISTRICTS = mayRelaxDistricts;
+    
+    const { c, R } = decisionState;
+    const { m, routes } = R;
+    const { xPickupLocation, yPickupLocation, xDeliveryLocation, yDeliveryLocation } = c;
+
+    const postDecisionState = State.clone(decisionState)
+      .setNewCustomer(null);
+
+    let routeInDistrictUpdateCost = Infinity;
+    let routeInDistrictToUpdate = null;
+
+    let routeOutsideDistrictUpdateCost = Infinity;
+    let routeOutsideDistrictToUpdate = null;
+
+    for (let i = 0; i < m; i++) {
+      const plannedRoute = routes[i];
+      const { xHomeLocation, yHomeLocation } = plannedRoute;
+      const newRoute = plannedRoute.cheapestInsertion(c);
+      if (newRoute.getNumberOfCustomerVisits() > plannedRoute.getNumberOfCustomerVisits()) {
+
+        if (Math.abs(xPickupLocation - xHomeLocation) <= THRESHOLD_VALUE && Math.abs(yPickupLocation - yHomeLocation) <= THRESHOLD_VALUE) {
+          // PICKUP IN DISTRICT
+          console.log('PICKUP IN DISTRICT');
+          if (newRoute.getRouteCost() - plannedRoute.getRouteCost() < routeInDistrictUpdateCost) {
+            routeInDistrictUpdateCost = newRoute.getRouteCost() - plannedRoute.getRouteCost();
+            routeInDistrictToUpdate = newRoute;
+          } // endif 
+
+        } else if (RELAX_DISTRICTS && !routeInDistrictToUpdate) {
+          // PICKUP NOT IN DISTRICT & RELAXATION ALLOWED
+          console.log('PICKUP NOT IN DISTRICT & RELAXATION ALLOWED');
+          if (newRoute.getRouteCost() - plannedRoute.getRouteCost() < routeOutsideDistrictUpdateCost) {
+            routeOutsideDistrictUpdateCost = newRoute.getRouteCost() - plannedRoute.getRouteCost();
+            routeOutsideDistrictToUpdate = newRoute;
+          } // endif
+
+        } // endif
+
+      } // endif
+    } // endfor
+
+    if (routeInDistrictToUpdate) {
+      console.log('CUSTOMER ACCEPTED (IN DISTRICT)');
+      postDecisionState.updateRouteInRoutePlan(routeInDistrictToUpdate)
+        .acceptCustomer(c);
+    } else if (routeOutsideDistrictToUpdate) {
+      console.log('CUSTOMER ACCEPTED (OUTSIDE DISTRICT)');
+      postDecisionState.updateRouteInRoutePlan(routeOutsideDistrictToUpdate)
+        .acceptCustomer(c);
+    } else {
+      console.log('CUSTOMER REJECTED');
+      postDecisionState.rejectCustomer(c);
+    }
+
+    return postDecisionState;
   };
 };
 
