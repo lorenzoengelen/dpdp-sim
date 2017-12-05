@@ -48,7 +48,12 @@ export const myopic = decisionState => {
   return postDecisionState;
 };
 
-
+// SERVICE REGION PARTITIONING - GEOGRAPHIC DISTRICTING
+export const geographicDistricting = threshold => {
+  return (decisionState, b = threshold) => {
+    const THRESHOLD_VALUE = threshold;
+  };
+};
 
 
 

@@ -35,8 +35,8 @@ setInterval(tick, 1000);
 // POLICY FUNCTION APPROXIMATION
 import PFA from './mdp/pfa';
 import State from './mdp/state';
-import {Samples, Path, Realization} from './mdp/samples';
-import {policy, myopic} from './mdp/policy';
+import { Samples, Path, Realization } from './mdp/samples';
+import { myopic, geographicDistricting } from './mdp/policy';
 
 const ab = s => { return { a: Number(s.split(',')[0]), b: Number(s.split(',')[1]) }; };
 
@@ -44,18 +44,6 @@ const ab = s => { return { a: Number(s.split(',')[0]), b: Number(s.split(',')[1]
 const initialState = State.init()
   .setDecisionPoint(0)
   .setDecisionTime(0)
-  // .addVehicle(5, 5)
-  // .addVehicle(5, 5)
-  // .addVehicle(5, 5)
-  // .addVehicle(5, 5)
-  // .addVehicle(5, 5)
-  // .addVehicle(5, 5)
-  // .addVehicle(5, 5)
-  // .addVehicle(5, 5)
-  // .addVehicle(5, 5)
-  // .addVehicle(5, 5)
-  // .addVehicle(5, 5)
-  // .addVehicle(5, 5)
   .addVehicle(2.5, 2.5)
   .addVehicle(2.5, 2.5)
   .addVehicle(2.5, 2.5)
