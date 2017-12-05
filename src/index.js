@@ -44,6 +44,18 @@ const ab = s => { return { a: Number(s.split(',')[0]), b: Number(s.split(',')[1]
 const initialState = State.init()
   .setDecisionPoint(0)
   .setDecisionTime(0)
+  // .addVehicle(5, 5)
+  // .addVehicle(5, 5)
+  // .addVehicle(5, 5)
+  // .addVehicle(5, 5)
+  // .addVehicle(5, 5)
+  // .addVehicle(5, 5)
+  // .addVehicle(5, 5)
+  // .addVehicle(5, 5)
+  // .addVehicle(5, 5)
+  // .addVehicle(5, 5)
+  // .addVehicle(5, 5)
+  // .addVehicle(5, 5)
   .addVehicle(2.5, 2.5)
   .addVehicle(2.5, 2.5)
   .addVehicle(2.5, 2.5)
@@ -60,9 +72,9 @@ const initialState = State.init()
 // init SAMPLE PATH REALIZATIONS
 const samples = Samples.init();
 
-const DYNAMISM_LEVEL = '0.80';
-const URGENCY_LEVEL = '20';
-const SCALE_LEVEL = '1.00';
+const DYNAMISM_LEVEL = '0.80'; // '0.20', '0.50', '0.80'
+const URGENCY_LEVEL = '35'; // '5', '20', '35'
+const SCALE_LEVEL = '1.00'; // '1.00', '5.00', '10.00'
 
 for (let i = 0; i < 50; i++) {
   // iterate over DATA
