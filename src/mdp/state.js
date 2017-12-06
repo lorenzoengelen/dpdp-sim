@@ -30,6 +30,13 @@ export default class State {
     return this;
   }
 
+  addVehicles(amountOfVehicles, xHomeLocation, yHomeLocation) {
+    for (let i = 0; i < amountOfVehicles; i++) {
+      this.addVehicle(xHomeLocation, yHomeLocation);
+    }
+    return this;
+  }
+
   addRoute(hx, hy) {
     this.R.addRoute(hx, hy);
     return this;
