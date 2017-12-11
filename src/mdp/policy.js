@@ -73,9 +73,9 @@ export const geographicDistricting = (thresholdValue, mayRelaxDistricts) => {
       const newRoute = plannedRoute.cheapestInsertion(c);
       if (newRoute.getNumberOfCustomerVisits() > plannedRoute.getNumberOfCustomerVisits()) {
 
-        if (Math.abs(xPickupLocation - xHomeLocation) <= THRESHOLD_VALUE && Math.abs(yPickupLocation - yHomeLocation) <= THRESHOLD_VALUE) {
+        // if (Math.abs(xDeliveryLocation - xHomeLocation) <= THRESHOLD_VALUE && Math.abs(yDeliveryLocation - yHomeLocation) <= THRESHOLD_VALUE) {
+        if (distance(xHomeLocation, yHomeLocation, xDeliveryLocation, yDeliveryLocation) <= THRESHOLD_VALUE) {
           // PICKUP IN DISTRICT
-          console.log('PICKUP IN DISTRICT');
           if (newRoute.getRouteCost() - plannedRoute.getRouteCost() < routeInDistrictUpdateCost) {
             routeInDistrictUpdateCost = newRoute.getRouteCost() - plannedRoute.getRouteCost();
             routeInDistrictToUpdate = newRoute;
@@ -83,7 +83,6 @@ export const geographicDistricting = (thresholdValue, mayRelaxDistricts) => {
 
         } else if (RELAX_DISTRICTS && !routeInDistrictToUpdate) {
           // PICKUP NOT IN DISTRICT & RELAXATION ALLOWED
-          console.log('PICKUP NOT IN DISTRICT & RELAXATION ALLOWED');
           if (newRoute.getRouteCost() - plannedRoute.getRouteCost() < routeOutsideDistrictUpdateCost) {
             routeOutsideDistrictUpdateCost = newRoute.getRouteCost() - plannedRoute.getRouteCost();
             routeOutsideDistrictToUpdate = newRoute;

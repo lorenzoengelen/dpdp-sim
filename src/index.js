@@ -37,6 +37,7 @@ import PFA from './mdp/pfa';
 import State from './mdp/state';
 import { Samples, Path, Realization } from './mdp/samples';
 import { myopic, geographicDistricting } from './mdp/policy';
+import { distance } from './utils/utils'
 
 const ab = s => { return { a: Number(s.split(',')[0]), b: Number(s.split(',')[1]) }; };
 
@@ -44,30 +45,22 @@ const ab = s => { return { a: Number(s.split(',')[0]), b: Number(s.split(',')[1]
 const initialState = State.init()
   .setDecisionPoint(0)
   .setDecisionTime(0)
-  .addVehicle(2.5, 2.5)
-  .addVehicle(2.5, 2.5)
-  .addVehicle(2.5, 2.5)
-  .addVehicle(2.5, 7.5)
-  .addVehicle(2.5, 7.5)
-  .addVehicle(2.5, 7.5)
-  .addVehicle(7.5, 2.5)
-  .addVehicle(7.5, 2.5)
-  .addVehicle(7.5, 2.5)
-  .addVehicle(7.5, 7.5)
-  .addVehicle(7.5, 7.5)
-  .addVehicle(7.5, 7.5);
+  .addVehicles(15, 2.5, 2.5)
+  .addVehicles(15, 7.5, 2.5)
+  .addVehicles(15, 2.5, 7.5)
+  .addVehicles(15, 7.5, 7.5);
 
 // init SAMPLE PATH REALIZATIONS
 const samples = Samples.init();
 
 const DYNAMISM_LEVEL = '0.80'; // '0.20', '0.50', '0.80'
 const URGENCY_LEVEL = '35'; // '5', '20', '35'
-const SCALE_LEVEL = '1.00'; // '1.00', '5.00', '10.00'
+const SCALE_LEVEL = '5.00'; // '1.00', '5.00', '10.00'
 
 for (let i = 0; i < 50; i++) {
   // iterate over DATA
-  const data = require(`./lon/${DYNAMISM_LEVEL}-${URGENCY_LEVEL}-${SCALE_LEVEL}-${i}.scen`);
   console.log(`LOAD ==> SAMPLE PATH: ./lon/${DYNAMISM_LEVEL}-${URGENCY_LEVEL}-${SCALE_LEVEL}-${i}.scen`);
+  const data = require(`./lon/${DYNAMISM_LEVEL}-${URGENCY_LEVEL}-${SCALE_LEVEL}-${i}.scen`);
 
   // init SAMPLE PATH
   const path = Path.init();
@@ -108,7 +101,7 @@ for (let i = 0; i < 50; i++) {
 } // endfor h (iterate samples)
 
 // init POLICY FUNCTION APPROXIMATION
-const THRESHOLD_VALUE = 2.50;
+const THRESHOLD_VALUE = distance(2.5, 2.5, 5, 5) + 1;
 const RELAX_DISTRICTS = true;
 const pfa = PFA.init()
   .setInitialState(initialState)
