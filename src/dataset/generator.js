@@ -107,24 +107,24 @@ class Builder {
     const DYNAMISM_T2 = 0.575;
     const DYNAMISM_T3 = 0.675;
 
-    const DEFAULT_DYN = [0.5];
-    const DEFAULT_URG = [20];
-    const DEFAULT_SCL = [1];
+    const DEFAULT_DYN = 0.5;
+    const DEFAULT_URG = 20;
+    const DEFAULT_SCL = 1;
     const DEFAULT_NUM_INSTANCES = 1;
     const DEFAULT_SCENARIO_HOURS = 12;
     const DEFAULT_SCENARIO_LENGTH = DEFAULT_SCENARIO_HOURS * MS_IN_H;
 
-    const DYNAMISM_MAP = new Map()
+    this.DYNAMISM_MAP = new Map()
       .set([0.000, DYNAMISM_T1], timeSeriesType.POISSON_SINE)
       .set([DYNAMISM_T1, DYNAMISM_T2], timeSeriesType.POISSON_HOMOGENOUS)
       .set([DYNAMISM_T2, DYNAMISM_T3], timeSeriesType.NORMAL)
       .set([DYNAMISM_T3, 1.000], timeSeriesType.UNIFORM);
 
     this.randomSeed = 0;
-    this.scaleLevels = DEFAULT_SCL;
-    this.dynamismLevels = DEFAULT_DYN;
-    this.dynamismRangeMap = DYNAMISM_MAP;
-    this.urgencyLevels = DEFAULT_URG;
+    this.scaleLevels = [DEFAULT_SCL];
+    this.dynamismLevels = [DEFAULT_DYN];
+    this.dynamismRangeMap = new Map().set(timeSeriesType.POISSON_HOMOGENOUS, this.createDynamismRange(DEFAULT_DYN));
+    this.urgencyLevels = [DEFAULT_URG];
     this.numInstances = DEFAULT_NUM_INSTANCES;
     this.numThreads;
     this.datasetDir = '/';
@@ -143,27 +143,30 @@ class Builder {
     return this;
   }
 
+  // only allowed; 0, 5, 10, 15, ..., 95, 100
   setDynamismLevels(levels) {
-    const rangeSet = null;
-    const dynamismLevelsB = null;
-    const map = null;
+    const dynamismLevelsB = new Array();
+    const map = new Map();
+    const timeSeriesTypes = new Map();
     
-    levels.forEach(d => {
-      if (d >= 0 && d <= 1) {
-        const newRange = this.createDynamismRange(d);
-        
+    levels.forEach(dynamism => {
+      if (dynamism >= 0 && dynamism <= 1) {
+        const newRange = this.createDynamismRange(dynamism);
+        dynamismLevelsB.push(newRange);
+        map.set(newRange, dynamism);
       }
     });
 
-    const timeSeriesTypes = null;
+    dynamismLevelsB.forEach(dynamismRange => {
+      for (let timeSeriesRange of this.DYNAMISM_MAP.keys()) {
+        if (dynamismRange[0] > timeSeriesRange[0] && dynamismRange[0] < timeSeriesRange[1]) {
+          timeSeriesTypes.set(this.DYNAMISM_MAP.get(timeSeriesRange), dynamismRange);
+        }
+      }
+    });
 
-    // for (r in dynamismLevelsB) {
-    //   timeSeriesTypes.put()
-    // }
-
-    this.dynamismLevels = levels;
-    // this.dynamismRangeMap = null;
-
+    this.dynamismLevels = timeSeriesTypes;
+    this.dynamismRangeMap = map;
     return this;
   }
 
