@@ -5,6 +5,7 @@
 // - instances
 
 import GeneratorSettings from './settings';
+import { LocationGenerator } from './scenario'
 
 const THREAD_SLEEP_DURATION = 100;
 const MS_IN_MIN = 60000;
@@ -56,13 +57,11 @@ export default class DatasetGenerator {
     let randomGeneratorMap = null;
 
     const { urgencyLevels, scaleLevels, dynamismLevels } = this.builder;
-    urgencyLevels.forEach(urgency => {
-      scaleLevels.forEach(scale => {
-        dynamismLevels.forEach(dynamismLevel => {
-          console.log(urgency, scale, dynamismLevel);
-
-          const reps = this.builder.numInstances * dynamismLevel;
-          const urg = urgency * 60 * 1000; // urgency in ms
+    urgencyLevels.forEach(urgencyLevel => {
+      scaleLevels.forEach(scaleLevel => {
+        dynamismLevels.forEach((dynamismRange, timeSeriesType) => {
+          const reps = this.builder.numInstances * dynamismRange.length;
+          const urg = urgencyLevel * 60 * 1000; // urgency in ms
 
           let officeHoursLength = this.builder.scenarioLengthMs - PICKUP_SERVICE_TIME - DELIVERY_SERVICE_TIME;
           if (urg <= 0.75 * MAXIMUM_TRAVEL_TIME) {
@@ -71,7 +70,7 @@ export default class DatasetGenerator {
             officeHoursLength = officeHoursLength - (1.25 * MAXIMUM_TRAVEL_TIME - urg);
           }
 
-          const numOrders = Math.round(scale * this.numOrdersPerScale);
+          const numOrders = Math.round(scaleLevel * this.numOrdersPerScale);
 
           const props = new Map()
             .set('expected_num_orders', String(numOrders))
@@ -85,13 +84,34 @@ export default class DatasetGenerator {
             .builder()
             .setDayLength(this.builder.scenarioLengthMs)
             .setOfficeHours(officeHoursLength)
-            .setTimeSeriesType()
-            .setDynamismRangeCenters()
-            .setUrgency()
-            .setScale()
-            .setNumOrders()
-            .setProperties()
+            .setTimeSeriesType(timeSeriesType)
+            .setDynamismRange(dynamismRange)
+            .setDynamismRangeCenters(this.builder.dynamismRangeMap.get(dynamismRange))
+            .setUrgency(urg)
+            .setScale(scaleLevels)
+            .setNumOrders(numOrders)
+            .setProperties(props)
             .build();
+
+          // HERE
+          // IdSeedGenerator
+
+          console.log('reps', reps)
+          for (let i = 0; i < reps; i++) {
+            const locationGenerator = LocationGenerator
+              .builder()
+              .min(0)
+              .max(AREA_WIDTH)
+              .buildUniform();
+
+            console.log(locationGenerator)
+
+            const timeSeriesGenerator = null;
+
+            const scenarioGenerator = null;
+
+            // jobs.push()
+          }
 
         }); // dynamism
       }); // scale
@@ -173,13 +193,11 @@ class Builder {
   // sets the levels of urgency, urgency is expressed in minutes
   setUrgencyLevels(levels) {
     this.urgencyLevels = levels;
-    // this.urgencyLevels = ImmutableSet.copyOf(levels);
     return this;
   }
 
   setScaleLevels(levels) {
     this.scaleLevels = levels;
-    // this.scaleLevels = ImmutableSet.copyOf(levels);
     return this;
   }
 
