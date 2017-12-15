@@ -5,10 +5,11 @@ export default class StochasticSuppliers {
 };
 
 class DoubleDistributionSS {
-
+  // todo
 };
 
+// creates a uniform distribution
 class UniformRealDistribution {
-
+  // todo
 };
 
