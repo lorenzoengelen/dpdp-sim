@@ -33,7 +33,7 @@ export default class PFA {
     const { paths } = this.samples;
     
     let { H } = this.samples; // ONLY FOR TEST PURPOSES => CHANGE TO CONST LATER
-    H = 5 // ==> NOTE ONLY FOR TEST PURPOSES <==
+    // H = 5 // ==> NOTE ONLY FOR TEST PURPOSES <==
 
     // SAMPLE AVERAGE APPROXIMATION (SAA) (Fu, 2015)
     let averageAcceptedCustomers = 0;

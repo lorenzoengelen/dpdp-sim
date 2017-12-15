@@ -19,18 +19,25 @@ const tick = () => {
 setInterval(tick, 1000);
 
 // DATASET PART
-// import DatasetGenerator from './dataset/generator';
+import DatasetGenerator from './dataset/generator';
 
-// const dg = DatasetGenerator
-//   .builder()
-//   .setScenarioLength(4)
-//   .setDynamismLevels([0.5])
-//   .setUrgencyLevels([20])
-//   .setScaleLevels([1])
-//   .setNumInstances(1)
-//   .setDatasetDir()
-//   .setNumThreads()
-//   .build();
+const generator = DatasetGenerator
+  .builder()
+  .setScenarioLength(12)
+  // .setDynamismLevels(new Array(0.1, 0.9))
+  .setDynamismLevels(new Array(0.5, 0.6))
+  .setUrgencyLevels(new Array(30, 60))
+  // .setScaleLevels(new Array(1, 2))
+  .setScaleLevels([1])
+  .setNumInstances(1)
+  .setDatasetDir('dsdir')
+  .setNumThreads(1)
+  .build();
+
+console.log('generator', generator);
+
+// generate scenario
+const scenario = generator.generateScenario();
 
 // POLICY FUNCTION APPROXIMATION
 import PFA from './mdp/pfa';
@@ -45,21 +52,21 @@ const ab = s => { return { a: Number(s.split(',')[0]), b: Number(s.split(',')[1]
 const initialState = State.init()
   .setDecisionPoint(0)
   .setDecisionTime(0)
-  .addVehicles(15, 2.5, 2.5)
-  .addVehicles(15, 7.5, 2.5)
-  .addVehicles(15, 2.5, 7.5)
-  .addVehicles(15, 7.5, 7.5);
+  .addVehicles(3, 2.5, 2.5)
+  .addVehicles(3, 7.5, 2.5)
+  .addVehicles(3, 2.5, 7.5)
+  .addVehicles(3, 7.5, 7.5);
 
 // init SAMPLE PATH REALIZATIONS
 const samples = Samples.init();
 
 const DYNAMISM_LEVEL = '0.80'; // '0.20', '0.50', '0.80'
 const URGENCY_LEVEL = '35'; // '5', '20', '35'
-const SCALE_LEVEL = '5.00'; // '1.00', '5.00', '10.00'
+const SCALE_LEVEL = '1.00'; // '1.00', '5.00', '10.00'
 
 for (let i = 0; i < 50; i++) {
   // iterate over DATA
-  console.log(`LOAD ==> SAMPLE PATH: ./lon/${DYNAMISM_LEVEL}-${URGENCY_LEVEL}-${SCALE_LEVEL}-${i}.scen`);
+  // console.log(`LOAD ==> SAMPLE PATH: ./lon/${DYNAMISM_LEVEL}-${URGENCY_LEVEL}-${SCALE_LEVEL}-${i}.scen`);
   const data = require(`./lon/${DYNAMISM_LEVEL}-${URGENCY_LEVEL}-${SCALE_LEVEL}-${i}.scen`);
 
   // init SAMPLE PATH
@@ -112,7 +119,7 @@ const pfa = PFA.init()
 console.log(pfa);
 
 // APPROXIMATE policy
-pfa.approximate();
+// pfa.approximate();
 
 
 
