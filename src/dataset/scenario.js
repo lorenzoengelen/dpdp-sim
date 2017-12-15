@@ -4,11 +4,11 @@ export class LocationGenerator {
   }
 
   static builder() {
-    return new Builder();
+    return new LocationBuilder();
   }
 };
 
-class Builder {
+class LocationBuilder {
   constructor() {
     this.xMin = null;
     this.yMin = null;
@@ -51,3 +51,57 @@ class Builder {
     return new LocationGenerator(this);
   }
 };
+
+export class TimeSeriesGenerator {
+  constructor(b) {
+    this.builder = b;
+  }
+
+  static builder() {
+    return new TimeSeriesGeneratorBuilder();
+  }
+
+  generate() {
+
+  }
+};
+
+class TimeSeriesGeneratorBuilder {
+  build() {
+    return new TimeSeriesGenerator(this);
+  }
+};
+
+export class TimeSeries {
+  static nonHomogenousPoisson(length, intensityFunction) {
+    return new SuppliedNonHomogenous(length, intensityFunction);
+  }
+
+  static homogenousPoisson(length, numEvents) {
+    return new PoissonProcess(length, numEvents / length);
+  }
+};
+
+class SuppliedNonHomogenous {
+  constructor(l, funcSup) {
+    this.length = l;
+    this.lambdSup = funcSup;
+    this.rng = null;
+  }
+
+  generate(seed) {
+
+  }
+}
+
+class PoissonProcess { // implements TimeSeriesGenerator
+  constructor(len, intens) {
+    this.length = len;
+    this.intensity = intens;
+    this.rng = null;
+  }
+
+  generate(seed) {
+    
+  }
+}
