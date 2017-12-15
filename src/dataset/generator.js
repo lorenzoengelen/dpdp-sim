@@ -5,7 +5,9 @@
 // - instances
 
 import GeneratorSettings from './settings';
-import { LocationGenerator } from './scenario'
+import { LocationGenerator, TimeSeriesGenerator, TimeSeries } from './scenario';
+import IntensityFunctions from './intensity';
+import StochasticSuppliers from './suppliers';
 
 const THREAD_SLEEP_DURATION = 100;
 const MS_IN_MIN = 60000;
@@ -96,17 +98,20 @@ export default class DatasetGenerator {
           // HERE
           // IdSeedGenerator
 
-          console.log('reps', reps)
           for (let i = 0; i < reps; i++) {
             const locationGenerator = LocationGenerator
               .builder()
               .min(0)
               .max(AREA_WIDTH)
-              .buildUniform();
+              .buildUniform(); // TODO
 
-            console.log(locationGenerator)
+            const timeSeriesGenerator = this.createTimeSeriesGenerator(timeSeriesType, 
+              officeHoursLength,
+              numOrders,
+              this.numOrdersPerScale,
+              props);
 
-            const timeSeriesGenerator = null;
+            console.log('timeSeriesGenerator', timeSeriesGenerator)
 
             const scenarioGenerator = null;
 
@@ -118,6 +123,64 @@ export default class DatasetGenerator {
     }); // urgency
 
     return dataset;
+  }
+
+  createTimeSeriesGenerator(seriesType, officeHoursLength, numOrders, numOrdersPerScale, props) {
+    const numPeriods = officeHoursLength / INTENSITY_PERIOD;
+
+    if (seriesType === timeSeriesType.POISSON_SINE) {
+      // (26) h ~ U(-.99, 1.50) 
+      const heightL = -0.99;
+      const heightU = 3;
+
+      props.set(TIME_SERIES, 'non-homogenous (sine) Poisson process')
+        .set('time_series.sine.period', String(INTENSITY_PERIOD))
+        .set('time_series.num_periods', String(numPeriods))
+        .set('time_series.sine.height', this.uniform(heightL, heightU))
+        .set('time_series.sine.phase_shift', this.uniform(0, INTENSITY_PERIOD));
+
+      const sineTimeSeriesGenerator = TimeSeries.nonHomogenousPoisson(
+        officeHoursLength,
+        // (22) λ(t) = a · sin (t · f · 2 π − π · p) + h
+        IntensityFunctions
+          .sineIntensity()
+          .setArea(numOrders / numPeriods)
+          .setPeriod(INTENSITY_PERIOD)
+          .setHeight(StochasticSuppliers.uniformDouble(heightL, heightU)) // TODO
+          .setPhaseShift(StochasticSuppliers.uniformDouble(0, INTENSITY_PERIOD)) // TODO
+          .buildStochasticSupplier());
+      return sineTimeSeriesGenerator;
+    } else if (seriesType === timeSeriesType.POISSON_HOMOGENOUS) {
+      // (21) λ(t) = |E| / T
+      props.set(TIME_SERIES, 'homogenous Poisson process')
+        .set('time_series.intensity', String(numOrdersPerScale / officeHoursLength));
+      return TimeSeries.homogenousPoisson(officeHoursLength, numOrders);
+    } else if (seriesType === timeSeriesType.NORMAL) {
+      const mean = officeHoursLength / numOrders;
+      const sd = 2.4 * 60 * 1000; // in paper 0.04?
+      props.set(TIME_SERIES, 'normal distribution')
+        .set('time_series.normal', this.normal(mean, sd))
+        .set('time_series.normal.truncated', 't > 0');
+
+
+    } else if (seriesType === timeSeriesType.UNIFORM) {
+
+
+    }
+
+    return null;
+  }
+
+  normal(m, std) {
+    return this.normal2('N', m, std);
+  }
+
+  uniform(m, std) {
+    return this.normal2('U', m, std);
+  }
+
+  normal2(letter, m, std) {
+    return `${letter}(${m},${std})`;
   }
 };
 
